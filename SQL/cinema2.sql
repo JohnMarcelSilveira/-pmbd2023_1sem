@@ -22,12 +22,12 @@ create table filmes(
     nome text,
     ano_lancamento integer,
     categoria char varying(100),
-    cod_diretor integer references diretores(codigo)
+    cod_diretor integer references diretores(codigo) on delete cascade
 );
 
 CREATE TABLE salas_filmes (
     numero_sala integer references salas (numero),
-    cod_filme integer references filmes (codigo),
+    cod_filme integer references filmes (codigo) on delete cascade,
     data date,
     horario time,
     primary key (numero_sala, cod_filme, data)
@@ -36,7 +36,7 @@ create table premios(
     codigo serial primary key,
     nome char varying(100),
     ano_premiacao integer check (ano_premiacao > 1900),
-    cod_filme integer references filmes(codigo)
+    cod_filme integer references filmes(codigo) on delete cascade
 );
 
 INSERT INTO salas (numero, descricao, capacidade) VALUES
