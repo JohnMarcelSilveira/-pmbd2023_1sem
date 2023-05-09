@@ -77,4 +77,16 @@ INSERT INTO premios (codigo, nome, ano_premiacao, cod_filme) VALUES
 (7, 'Oscar – Melhor Atriz Coadjuvante', 1997, 1 );
 
 
-select nome from filmes where categoria = 'Animação'
+/* 
+
+select nome from filmes where categoria = 'Animação';
+update salas_filmes set numero_sala = 202 where data = '2014-04-14';
+
+
+
+delete from diretores where nome = 'Fulano de Tal da Silva';
+
+delete from filmes where 
+select codigo from diretores where nome = 'Fulano de Tal da Silva';
+
+*/
