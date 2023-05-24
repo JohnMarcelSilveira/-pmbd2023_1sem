@@ -39,11 +39,16 @@ CREATE TABLE andar(
 
 CREATE TABLE vaga(
     id serial primary key,
-    andar_id integer references andar(id)
+    numero_vaga integer,
+    descricao character varying(30),
+    preferencial boolean default false,
+    andar_id integer references andar(id),
+    unique(numero_vaga,andar_id) 
+--eu quero que a pk da vaga seja o numero e seu andar pois eu posso ter a vaga numero 1 no andar 1, andar 2 e etc
 );
 
 CREATE TABLE estacionamento(    
-    vaga_id integer references vaga(id),
+    vaga_id integer references vaga(id), --quando eu uso pk composta essa fk não rola
     veiculo_id integer references veiculo(id),
     data_hora_entrada timestamp not null,
     data_hora_saida timestamp,
@@ -93,13 +98,16 @@ VALUES
   (12);
 
 --insert na tabela vagas
-INSERT INTO vaga (andar_id)
+INSERT INTO vaga (numero_vaga,descricao,andar_id)
 VALUES
-  (1),
-  (1),
-  (2),
-  (3),
-  (3);
+  (1,null,1),
+  (2,'Fica entre colunas',1),
+  (1,null,2),
+  (2,null,2),
+  (1,null,3),
+  (2,'Perto do elevador',3);
+
+--UPDATE vaga SET preferencial = true WHERE id = 1;
 
 --insert na tabela estacionamento
 INSERT INTO estacionamento (vaga_id, veiculo_id, data_hora_entrada, data_hora_saida, valor_pago)
