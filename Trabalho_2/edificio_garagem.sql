@@ -102,12 +102,16 @@ INSERT INTO vaga (numero_vaga,descricao,andar_id)
 VALUES
   (1,null,1),
   (2,'Fica entre colunas',1),
+  (3,null,1),
   (1,null,2),
   (2,null,2),
+  (3,null,2),
   (1,null,3),
-  (2,'Perto do elevador',3);
+  (2,'Perto do elevador',3),
+  (3,null,3);
 
---UPDATE vaga SET preferencial = true WHERE id = 1;
+--atualizar para que todas vagas nº 1 sejam preferencial
+UPDATE vaga SET preferencial = true WHERE numero_vaga = 1;
 
 --insert na tabela estacionamento
 INSERT INTO estacionamento (vaga_id, veiculo_id, data_hora_entrada, data_hora_saida, valor_pago)
