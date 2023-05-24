@@ -42,7 +42,7 @@ CREATE TABLE vaga(
     andar_id integer references andar(id)
 );
 
-CREATE TABLE vaga_ocupada(    
+CREATE TABLE estacionamento(    
     vaga_id integer references vaga(id),
     veiculo_id integer references veiculo(id),
     data_hora_entrada timestamp not null,
@@ -101,8 +101,8 @@ VALUES
   (3),
   (3);
 
---insert na tabela vaga_ocupada
-INSERT INTO vaga_ocupada (vaga_id, veiculo_id, data_hora_entrada, data_hora_saida, valor_pago)
+--insert na tabela estacionamento
+INSERT INTO estacionamento (vaga_id, veiculo_id, data_hora_entrada, data_hora_saida, valor_pago)
 VALUES
   (1, 1, '2023-05-21 09:00:00', '2023-05-21 17:00:00', 20.50),
   (2, 2, '2023-05-21 10:30:00', '2023-05-21 15:45:00', 15.75),
@@ -118,15 +118,15 @@ select placa, ano from veiculo where ano >= 2000;
 
 select * from veiculo where modelo_id = 1;
 
-select * from vaga_ocupada where veiculo_id = 2;
+select * from estacionamento where veiculo_id = 2;
 
-select age(data_hora_saida, data_hora_entrada) as tempo_em_horas from vaga_ocupada where vaga_id = 2;
+select age(data_hora_saida, data_hora_entrada) as tempo_em_horas from estacionamento where vaga_id = 2;
 
 select count(*) as qtd from veiculo where modelo_id = 3;
 
 select avg(extract(year from age(current_date,data_nascimento))) as media_idade from cliente;
 
-select extract(hour from age(data_hora_saida,data_hora_entrada)) * 2 as valor_pago from vaga_ocupada;
+select extract(hour from age(data_hora_saida,data_hora_entrada)) * 2 as valor_pago from estacionamento;
 
 
 */
