@@ -39,20 +39,19 @@ CREATE TABLE andar(
 
 CREATE TABLE vaga(
     id serial primary key,
-    numero_vaga integer,
-    descricao character varying(30),
+    numero_id_vaga integer, -- esse seria o número de identificação fisica para facilitar a aceitação para o usuário pois geralmente uma vaga de estacionamento é identificada por número, exemplo vaga nº10 do 3º andar
+    descricao character varying(60),
     preferencial boolean default false,
     andar_id integer references andar(id),
-    unique(numero_vaga,andar_id) 
---eu quero que a pk da vaga seja o numero e seu andar pois eu posso ter a vaga numero 1 no andar 1, andar 2 e etc
+    unique(numero_id_vaga,andar_id) -- aqui eu estou garantindo que não haja duplicidade de número de vagas para o mesmo andar, exemplo não posso ter mais de uma vaga nº 10 no 3º andar
 );
 
 CREATE TABLE estacionamento(    
-    vaga_id integer references vaga(id), --quando eu uso pk composta essa fk não rola
+    vaga_id integer references vaga(id), 
     veiculo_id integer references veiculo(id),
     data_hora_entrada timestamp not null,
     data_hora_saida timestamp,
-    valor_pago money,
+    valor_pago money check(cast(valor_pago as numeric(20,2)) > 0),
     primary key(veiculo_id,vaga_id,data_hora_entrada)
 );
 
@@ -94,24 +93,50 @@ VALUES
 INSERT INTO andar (numero_vagas)
 VALUES
   (10),
-  (8),
-  (12);
+  (10),
+  (8);
 
 --insert na tabela vagas
-INSERT INTO vaga (numero_vaga,descricao,andar_id)
-VALUES
-  (1,null,1),
-  (2,'Fica entre colunas',1),
-  (3,null,1),
-  (1,null,2),
-  (2,null,2),
-  (3,null,2),
-  (1,null,3),
-  (2,'Perto do elevador',3),
-  (3,null,3);
 
---atualizar para que todas vagas nº 1 sejam preferencial
-UPDATE vaga SET preferencial = true WHERE numero_vaga = 1;
+INSERT INTO vaga (numero_id_vaga, descricao, andar_id)
+VALUES 
+  -- Andar 1
+  (1, 'Descrição da vaga 1 do andar 1', 1),
+  (2, 'Descrição da vaga 2 do andar 1', 1),
+  (3, 'Fica entre colunas', 1),
+  (4, 'Descrição da vaga 4 do andar 1', 1),
+  (5, 'Descrição da vaga 5 do andar 1', 1),
+  (6, null, 1), -- coloquei descrição null pois o campo não esta com restrição para null
+  (7, 'Descrição da vaga 7 do andar 1', 1),
+  (8, 'Descrição da vaga 8 do andar 1', 1),
+  (9, 'Descrição da vaga 9 do andar 1', 1),
+  (10, 'Descrição da vaga 10 do andar 1', 1),
+  
+  -- Andar 2
+  (1, 'Descrição da vaga 1 do andar 2', 2),
+  (2, 'Descrição da vaga 2 do andar 2', 2),
+  (3, 'Descrição da vaga 3 do andar 2', 2),
+  (4, 'Descrição da vaga 4 do andar 2', 2),
+  (5, 'Perto do elevador', 2),
+  (6, 'Descrição da vaga 6 do andar 2', 2),
+  (7, 'Descrição da vaga 7 do andar 2', 2),
+  (8, 'Descrição da vaga 8 do andar 2', 2),
+  (9, 'Descrição da vaga 9 do andar 2', 2),
+  (10, 'Descrição da vaga 10 do andar 2', 2),
+  
+  -- Andar 3
+  (1, 'Descrição da vaga 1 do andar 3', 3),
+  (2, 'Descrição da vaga 2 do andar 3', 3),
+  (3, 'Descrição da vaga 3 do andar 3', 3),
+  (4, 'Descrição da vaga 4 do andar 3', 3),
+  (5, 'Descrição da vaga 5 do andar 3', 3),
+  (6, 'Descrição da vaga 6 do andar 3', 3),
+  (7, 'Perto do elevador', 3),
+  (8, 'Descrição da vaga 8 do andar 3', 3);
+
+
+--atualizar para que todas vagas nº 1 sejam preferenciais
+UPDATE vaga SET preferencial = true, descricao = 'Vaga preferencial do andar ' || andar_id WHERE numero_id_vaga = 1;
 
 --insert na tabela estacionamento
 INSERT INTO estacionamento (vaga_id, veiculo_id, data_hora_entrada, data_hora_saida, valor_pago)
