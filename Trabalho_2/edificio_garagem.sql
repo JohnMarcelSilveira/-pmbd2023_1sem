@@ -49,7 +49,7 @@ CREATE TABLE vaga(
 CREATE TABLE estacionamento(    
     vaga_id integer references vaga(id), 
     veiculo_id integer references veiculo(id),
-    data_hora_entrada timestamp not null,
+    data_hora_entrada timestamp default current_timestamp,
     data_hora_saida timestamp,
     valor_pago money check(cast(valor_pago as numeric(20,2)) > 0),
     primary key(veiculo_id,vaga_id,data_hora_entrada)
@@ -139,13 +139,18 @@ VALUES
 UPDATE vaga SET preferencial = true, descricao = 'Vaga preferencial do andar ' || andar_id WHERE numero_id_vaga = 1;
 
 --insert na tabela estacionamento
+
+-- insert simulando um estacionamento iniciado nesse exato timestampo usando default
+INSERT INTO estacionamento (vaga_id, veiculo_id, data_hora_saida, valor_pago)
+VALUES
+  (1, 1,null, null);
+
+-- insert usando valores data_hora_entrada antigos
 INSERT INTO estacionamento (vaga_id, veiculo_id, data_hora_entrada, data_hora_saida, valor_pago)
 VALUES
   (1, 1, '2023-05-21 09:00:00', '2023-05-21 17:00:00', 20.50),
   (2, 2, '2023-05-21 10:30:00', '2023-05-21 15:45:00', 15.75),
   (3, 3, '2023-05-21 14:15:00', null, null);
-
-
 
 /*select's
 
